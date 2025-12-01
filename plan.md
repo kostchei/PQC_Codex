@@ -56,3 +56,8 @@ Goal: compare baseline TLS (1.2/1.3) to TLS 1.3 with PQ/hybrid KEM on a dummy se
 3) Build Android test harness with OkHttp EventListener and exportable logs.
 4) Prepare k6 scripts for baseline vs PQ runs; enable logs/metrics.
 5) Execute across Android versions with network conditioning; collect and compare results.
+
+## Region check: Singapore (ap-southeast-1)
+- CloudFront is global; PQ enablement is account-level. In the console, create/edit a distribution and look for the PQ security policy option (e.g., a PQ/hybrid TLS policy). If it appears, it will front POPs worldwide, including Singapore.
+- If PQ is unavailable in the account, deploy the DIY PQ terminator in ap-southeast-1: NLB (TCP) -> EC2 with PQ-enabled nginx/s2n-tls and an ACM cert issued in ap-southeast-1.
+- For non-CloudFront ALB/NLB termination, ACM certs must be in ap-southeast-1; for CloudFront, ACM cert must be in us-east-1 as usual.
